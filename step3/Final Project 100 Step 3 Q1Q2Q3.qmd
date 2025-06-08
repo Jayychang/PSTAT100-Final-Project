@@ -82,7 +82,7 @@ por_df <- por_df %>%
 -   Matthew Chan (hchan837)
 -   Darren Colianni (dcolianni)
 -   Nic Chan (nicholaschan)
--   STUDENT 5 (NetID 5)
+-   Jay Chang (jchang206)
 ::::
 
 # Abstract
@@ -380,7 +380,7 @@ histogram, the deviation is primarily due to a relatively small group of
 students who scored significantly lower than predicted, causing a mild
 left skew. These values represent approximately `r off_values_percent`%
 of the residuals. Aside from this small subset, the residuals are
-normally distributed and centered around zero. \
+normally distributed and centered around zero.\
 \
 Given the large sample size and that the deviation stems from a small
 portion of the data, the normality assumption is considered reasonably
@@ -417,10 +417,21 @@ and strengthen their Portuguese language skills.
 # Research Question 2
 
 ## Modeling Process
-To investigate the association between alcohol consumption and students' final Portuguese grades (`G3`), we employed a two-way ANOVA. This method allows us to examine the main effects of weekday alcohol consumption (Dalc) and weekend alcohol consumption (`Walc`) on `G3`, as well as their interaction effect. The model is specified as `G3 ~ Dalc * Walc`, which includes both main effects and the interaction term. Both Dalc and Walc are treated as ordered factors on a 1-5 scale, representing consumption levels from very low to very high.
+
+To investigate the association between alcohol consumption and students'
+final Portuguese grades (`G3`), we employed a two-way ANOVA. This method
+allows us to examine the main effects of weekday alcohol consumption
+(Dalc) and weekend alcohol consumption (`Walc`) on `G3`, as well as
+their interaction effect. The model is specified as `G3 ~ Dalc * Walc`,
+which includes both main effects and the interaction term. Both Dalc and
+Walc are treated as ordered factors on a 1-5 scale, representing
+consumption levels from very low to very high.
 
 ## Results
-The ANOVA test was performed to assess the significance of weekday and weekend alcohol consumption, and their interaction, on the final grade. The results are summarized in the table below.
+
+The ANOVA test was performed to assess the significance of weekday and
+weekend alcohol consumption, and their interaction, on the final grade.
+The results are summarized in the table below.
 
 ```{r, echo=FALSE}
 model_q2 <- aov(G3 ~ Dalc * Walc, data = por_df)
@@ -454,15 +465,30 @@ anova_kable_q2(model_q2, caption = "ANOVA for Alcohol Consumption's Effect on Fi
 ```
 
 ## Interpretation
-The results from the two-way ANOVA indicate that weekday alcohol consumption (`Dalc`) has a statistically significant main effect on students’ final grades (`G3`), with a p-value of 0.0000. This suggests that higher levels of weekday drinking are significantly associated with differences in academic performance.
 
-In contrast, weekend alcohol consumption (`Walc`) does not have a statistically significant effect on grades, with a p-value of 0.3992, which is well above the conventional 0.05 threshold. Therefore, weekend drinking alone does not show a significant association with final grades.
+The results from the two-way ANOVA indicate that weekday alcohol
+consumption (`Dalc`) has a statistically significant main effect on
+students’ final grades (`G3`), with a p-value of 0.0000. This suggests
+that higher levels of weekday drinking are significantly associated with
+differences in academic performance.
 
-The interaction term `Dalc:Walc` has a p-value of 0.1077, which is also not statistically significant. This indicates that the effect of weekday alcohol consumption on grades does not significantly differ across levels of weekend alcohol consumption, and vice versa.
+In contrast, weekend alcohol consumption (`Walc`) does not have a
+statistically significant effect on grades, with a p-value of 0.3992,
+which is well above the conventional 0.05 threshold. Therefore, weekend
+drinking alone does not show a significant association with final
+grades.
+
+The interaction term `Dalc:Walc` has a p-value of 0.1077, which is also
+not statistically significant. This indicates that the effect of weekday
+alcohol consumption on grades does not significantly differ across
+levels of weekend alcohol consumption, and vice versa.
 
 ## Visualization and Communication (Model Checking)
 
-To better understand the relationship between alcohol consumption and academic performance, an interaction plot is generated. This plot helps to visualize the main effects of `Dalc` and `Walc` and the lack of a significant interaction between them:
+To better understand the relationship between alcohol consumption and
+academic performance, an interaction plot is generated. This plot helps
+to visualize the main effects of `Dalc` and `Walc` and the lack of a
+significant interaction between them:
 
 ```{r, echo=FALSE}
 interaction.plot(x.factor = por_df$Dalc, 
@@ -478,11 +504,21 @@ interaction.plot(x.factor = por_df$Dalc,
                  main = "Interaction Plot of Alcohol Consumption and Final Grades")
 ```
 
-The interaction plot displays mean final grades by levels of weekday and weekend alcohol consumption. For all levels of weekend alcohol use, there is a general downward trend in academic performance as weekday alcohol use increases. The lines representing different levels of weekend alcohol use are mostly parallel, suggesting no strong interaction between weekday and weekend drinking. One exception is the sharp increase for `Walc = 1` at `Dalc = 3`, which may indicate variability or a small sample at that point. Overall, the plot suggests that weekday drinking is more consistently associated with lower grades than weekend drinking, and that the two do not strongly interact.
+The interaction plot displays mean final grades by levels of weekday and
+weekend alcohol consumption. For all levels of weekend alcohol use,
+there is a general downward trend in academic performance as weekday
+alcohol use increases. The lines representing different levels of
+weekend alcohol use are mostly parallel, suggesting no strong
+interaction between weekday and weekend drinking. One exception is the
+sharp increase for `Walc = 1` at `Dalc = 3`, which may indicate
+variability or a small sample at that point. Overall, the plot suggests
+that weekday drinking is more consistently associated with lower grades
+than weekend drinking, and that the two do not strongly interact.
 
 To check the assumptions of the ANOVA model, we analyze the residuals:
 
 ### Normality of Residuals
+
 ```{r, echo=FALSE}
 resids_q2 <- residuals(model_q2)
 
@@ -496,7 +532,15 @@ hist(resids_q2,
 qqplott(resids_q2)
 ```
 
-The histogram of the residuals shows a distribution that is approximately normal as it is roughly symmetric and bell-shaped, centered around at 0. The Q–Q plot supports this conclusion for the most part, as the residuals closely follow the theoretical quantile line in the center of the distribution. However, there is some noticeable deviation in the lower tail, suggesting potential skewness or the presence of outliers. Despite these tail deviations, the residuals largely conform to the normality assumption required for ANOVA. Overall, the assumption of normality appears reasonably satisfied.
+The histogram of the residuals shows a distribution that is
+approximately normal as it is roughly symmetric and bell-shaped,
+centered around at 0. The Q–Q plot supports this conclusion for the most
+part, as the residuals closely follow the theoretical quantile line in
+the center of the distribution. However, there is some noticeable
+deviation in the lower tail, suggesting potential skewness or the
+presence of outliers. Despite these tail deviations, the residuals
+largely conform to the normality assumption required for ANOVA. Overall,
+the assumption of normality appears reasonably satisfied.
 
 ### Equal Variances Across Fitted Values
 
@@ -504,24 +548,69 @@ The histogram of the residuals shows a distribution that is approximately normal
 residplot_fitval(model_q2)
 ```
 
-While the Shapiro-Wilk test returned a highly significant p-value ($p \approx 4.94 \times 10^{-15}$), indicating a deviation from normality in the residuals, visual assessments such as the histogram and Q–Q plot suggest that the deviation is relatively minor and occurs primarily in the tails.
+While the Shapiro-Wilk test returned a highly significant p-value
+($p \approx 4.94 \times 10^{-15}$), indicating a deviation from
+normality in the residuals, visual assessments such as the histogram and
+Q–Q plot suggest that the deviation is relatively minor and occurs
+primarily in the tails.
 
-Additionally, the residuals appear to have approximately constant variance across the range of fitted values, with no clear funneling or systematic patterns—supporting the assumption of homoscedasticity. The presence of vertically aligned points is expected in an ANOVA model due to discrete factor levels, and the vertical spread within those columns is reasonably consistent.
+Additionally, the residuals appear to have approximately constant
+variance across the range of fitted values, with no clear funneling or
+systematic patterns—supporting the assumption of homoscedasticity. The
+presence of vertically aligned points is expected in an ANOVA model due
+to discrete factor levels, and the vertical spread within those columns
+is reasonably consistent.
 
-Given the large sample size, ANOVA is generally robust to mild departures from normality. Therefore, despite the significant p-value from the Shapiro-Wilk test, there is no strong evidence of a meaningful violation of model assumptions. The assumptions of normality and homoscedasticity are considered reasonably satisfied, supporting the trustworthiness of the ANOVA results.
+Given the large sample size, ANOVA is generally robust to mild
+departures from normality. Therefore, despite the significant p-value
+from the Shapiro-Wilk test, there is no strong evidence of a meaningful
+violation of model assumptions. The assumptions of normality and
+homoscedasticity are considered reasonably satisfied, supporting the
+trustworthiness of the ANOVA results.
 
-## Conclusion 
-Our two-way ANOVA analysis examined the relationship between Portuguese high school students’ alcohol consumption and their final grades in Portuguese class. The results revealed a significant negative association between weekday alcohol consumption and final grades, suggesting that higher levels of drinking during the school week are associated with lower academic performance.
+## Conclusion
 
-In contrast, weekend alcohol consumption did not show a statistically significant effect on grades. The interaction between weekday and weekend alcohol use was not significant, indicating that the effect of weekday drinking on academic outcomes does not vary meaningfully across levels of weekend drinking.
+Our two-way ANOVA analysis examined the relationship between Portuguese
+high school students’ alcohol consumption and their final grades in
+Portuguese class. The results revealed a significant negative
+association between weekday alcohol consumption and final grades,
+suggesting that higher levels of drinking during the school week are
+associated with lower academic performance.
 
-These findings suggest that weekday drinking may be disruptive to students’ academic success, possibly due to its interference with school responsibilities, sleep quality, and cognitive performance. While the study does not establish causality, the strong association points to a behavioral pattern that may warrant intervention. Future research or policy efforts may consider addressing weekday alcohol consumption to support better academic outcomes.
+In contrast, weekend alcohol consumption did not show a statistically
+significant effect on grades. The interaction between weekday and
+weekend alcohol use was not significant, indicating that the effect of
+weekday drinking on academic outcomes does not vary meaningfully across
+levels of weekend drinking.
+
+These findings suggest that weekday drinking may be disruptive to
+students’ academic success, possibly due to its interference with school
+responsibilities, sleep quality, and cognitive performance. While the
+study does not establish causality, the strong association points to a
+behavioral pattern that may warrant intervention. Future research or
+policy efforts may consider addressing weekday alcohol consumption to
+support better academic outcomes.
 
 # Research Question 3
 
 ## Modeling Process
 
-When looking at Research Question 3, it was evident that I would be comparing the average amount of free time between two groups. Those groups being students in relationships versus students who are not in relationships. The first thing I did was create side by side density histograms showing the distributions of average free time between the two groups. I made sure it was a density histogram because there were more students not in relationships (412) than those in relationships (239). This ensured that the distributions could be compared 1 to 1 without being affected by unequal weighting. The next plot I created was an overlayed density plot of both distributions which allows the viewer to see the similarities and differences in distribution in both plots. I created these plots to get some preliminary insights on how the distributions looked before I used a t-test to see whether I could reject or fail to reject the null hypothesis that there is no significant difference in average free time between students in a romantic relationship and those who are not.
+When looking at Research Question 3, it was evident that I would be
+comparing the average amount of free time between two groups. Those
+groups being students in relationships versus students who are not in
+relationships. The first thing I did was create side by side density
+histograms showing the distributions of average free time between the
+two groups. I made sure it was a density histogram because there were
+more students not in relationships (412) than those in relationships
+(239). This ensured that the distributions could be compared 1 to 1
+without being affected by unequal weighting. The next plot I created was
+an overlayed density plot of both distributions which allows the viewer
+to see the similarities and differences in distribution in both plots. I
+created these plots to get some preliminary insights on how the
+distributions looked before I used a t-test to see whether I could
+reject or fail to reject the null hypothesis that there is no
+significant difference in average free time between students in a
+romantic relationship and those who are not.
 
 ```{r}
 #| echo: false
@@ -570,10 +659,139 @@ summary_table <- data.frame(
 )
 kable(summary_table, digits = 3, caption = "Summary of Welch's t-test for Freetime by Romantic Status")
 ```
-We use a Welch's two-sided t-test because the inputted data is independent, the sample sizes between the groups differ, and the variances are unequal. Based on the t-test, we get a t statistic of -0.67501, and a p value of 0.5. Because this is a two tailed test with a = 0.05, our alpha endpoints are approximately -1.96 and 1.96. The t statistic of -0.67501 falls between this interval, so we fail to reject the null hypothesis.
 
-## Interpretation 
+We use a Welch's two-sided t-test because the inputted data is
+independent, the sample sizes between the groups differ, and the
+variances are unequal. Based on the t-test, we get a t statistic of
+-0.67501, and a p value of 0.5. Because this is a two tailed test with a
+= 0.05, our alpha endpoints are approximately -1.96 and 1.96. The t
+statistic of -0.67501 falls between this interval, so we fail to reject
+the null hypothesis.
 
-Based on the two-sided Welch's t-test, we fail to reject the null hypothesis. This indicates that there is no significant difference in average free time between students in relationships and students not in relationships. This finding agrees with the density histograms and density plot because when looking at the models, the two groups appear to follow similar distributions. Running the t-test confirms the observation that there is no statistically significant difference in average free time.
+## Interpretation
 
-# Conclusion
+Based on the two-sided Welch's t-test, we fail to reject the null
+hypothesis. This indicates that there is no significant difference in
+average free time between students in relationships and students not in
+relationships. This finding agrees with the density histograms and
+density plot because when looking at the models, the two groups appear
+to follow similar distributions. Running the t-test confirms the
+observation that there is no statistically significant difference in
+average free time.
+
+## Conclusion
+
+The analysis for our third research question explored whether being in a
+romantic relationship affects the amount of average free time reported
+by Portuguese high school students. After comparing distributions and
+using Welch’s two-sided t-test, the study found no statistically
+significant difference in free time between students who are in romantic
+relationships and those who are not (p = 0.488). Both the visualizations
+(density plots) and summary statistics (means and variances) supported
+this result, indicating similar distributions across groups.
+
+Based on our findings, we can recommend that different services such as
+student support services and wellness programs can focus more broadly on
+time management strategies, balanced lifestyles, and stress management
+that apply to all students rather than tailoring efforts based on
+relationship status.
+
+Although our findings give us actionable insights into average free time
+vs. relationship status, apparent limitations or bias can be the result
+of self-reported data and simplistic categorization, with our findings
+overlooking nuances such as quality, duration, or intensity of the
+relationship that could influence time availability.
+
+To possibly improve or add to future insights and analysis, we could
+incorporate interviews or surveys that provide more detailed context
+around students’ relationships and time use, or utilize time-series data
+to help assess how changes in relationship status affect students'
+behaviors and time availability across different periods.
+
+# Final Conclusion and Recommendations
+
+Our project aimed to explore how various social, familial, and
+behavioral factors influence the academic performance and lifestyle of
+Portuguese high school students, using the Student Performance dataset
+compiled by Cortez and Silva (2008). Specifically, we examined the
+effects of parental education, alcohol consumption, and relationship
+status on students’ final grades in Portuguese and their reported free
+time. After our in depth analysis, we can address key insights,
+recommendations, limitations, and future directions.
+
+## Key Insights
+
+1.  **Parental Education:** We found strong evidence that a student’s
+    father's education level is positively associated with their final
+    Portuguese grade, even after controlling for weekly study time and
+    internet access. This suggests that higher parental education may
+    provide academic advantages, likely through increased support,
+    expectations, or access to educational resources.
+
+2.  **Alcohol Consumption:** Weekday alcohol consumption was
+    significantly negatively associated with academic performance,
+    whereas weekend alcohol consumption had no significant effect. This
+    highlights the particular academic risk associated with drinking
+    during school days, likely due to its impact on focus, sleep, and
+    class participation.
+
+3.  **Relationship Status and Free Time:** No significant difference was
+    found in average free time between students who are in romantic
+    relationships and those who are not. This implies that relationship
+    status alone may not meaningfully affect how much free time students
+    perceive themselves to have.
+
+## Actionable Recommendations
+
+-   **Expand Academic Support:** To help close the gap for students
+    whose parents have lower education levels, schools should consider
+    investing in academic mentoring, tutoring programs, and parent
+    engagement initiatives that provide families with tools to support
+    learning at home.
+
+-   **Target Weekday Alcohol Use:** Educational campaigns should
+    specifically address the risks of weekday alcohol consumption and
+    its negative academic consequences. Collaborations with parents,
+    counselors, and local health authorities could reinforce this
+    messaging and offer preventive resources.
+
+-   **Universal Time Management Programs:** Given that free time did not
+    significantly vary with relationship status, time management
+    resources, such as programs, apps, or advisory sessions, should be
+    offered broadly to all students rather than tailored to specific
+    demographic groups.
+
+## Limitations
+
+While the findings offer meaningful insights, several limitations must
+be acknowledged:
+
+-   The data is mostly observational, limiting our ability to imply
+    causality.
+
+-   Many variables, such as free time, alcohol use, and relationship
+    status, rely on self-reported data, which may introduce bias or
+    measurement error.
+
+-   The dataset represents students from two Portuguese schools during a
+    specific time period, which is a relative generalization to other
+    regions or educational systems.
+
+## Future Directions
+
+-   Qualitative research might provide deeper context, especially around
+    family support structures and relationship dynamics.
+
+-   Future analyses could also explore interaction between multiple
+    variables, such as whether the impact of alcohol use varies by
+    parental education or relationship status.
+
+-   Expanding this type of analysis to other subjects or countries could
+    validate the findings and help create more elaborate and valid
+    student support strategies.
+
+In summary, this project sheds light on several critical factors
+affecting student outcomes and well-being. While further research can be
+beneficial, the results provide a great foundation for insights aimed at
+improving academic performance and supporting student development in
+meaningful ways.
